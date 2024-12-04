@@ -8,6 +8,7 @@ import CreateBookDto from './createBook.dto';
 import { AuthorService } from '../author/author.service';
 import PublisherService from '../publisher/publisher.service';
 import CategoryService from '../category/category.service';
+import { UpdateBookDto } from './updateBook.dto';
 
 @Injectable()
 export default class BookService extends BaseService<Book> {
@@ -18,6 +19,10 @@ export default class BookService extends BaseService<Book> {
     private categoryService: CategoryService,
   ) {
     super(bookRespository);
+  }
+
+  async getAll(): Promise<Book[]> {
+    return this.bookRespository.find();
   }
 
   async create(data: CreateBookDto): Promise<Book> {
@@ -34,5 +39,23 @@ export default class BookService extends BaseService<Book> {
     };
 
     return this.bookRespository.save(newBook);
+  }
+
+  async update(data: UpdateBookDto): Promise<Book> {
+    const book = await this.findOneOrFail({ where: { id: data.id } });
+    if (data.price) {
+      book.price = data.price;
+    }
+    if (data.name) {
+      book.name = data.name;
+    }
+    return this.bookRespository.save(book);
+  }
+
+  async remove(id: number): Promise<{ message: string }> {
+    const book = await this.findOneOrFail({ where: { id } });
+    await this.bookRespository.remove(book);
+
+    return { message: 'Book deleted successfully' };
   }
 }

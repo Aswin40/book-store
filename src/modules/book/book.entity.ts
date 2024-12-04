@@ -4,6 +4,7 @@ import {
   Column,
   ManyToOne,
   ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import Author from '../author/author.entity';
 import { Category } from '../category/category.entity';
@@ -27,5 +28,6 @@ export default class Book {
   public publisher: Publisher;
 
   @ManyToMany(() => Category, { cascade: true })
+  @JoinTable()
   categories: Category[];
 }
