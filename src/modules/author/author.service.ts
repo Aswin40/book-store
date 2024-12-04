@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import Author from './author.entity';
 import { BaseService } from 'src/util/base.service';
+import UpdateAuthorDto from './updateAuthor.dto';
+import CreateAuthorDto from './createAuthor.dto';
 
 @Injectable()
 export class AuthorService extends BaseService<Author> {
@@ -13,7 +15,7 @@ export class AuthorService extends BaseService<Author> {
     super(authorRepository);
   }
 
-  async create(author: Partial<Author>): Promise<Author> {
+  async create(author: CreateAuthorDto): Promise<Author> {
     return this.authorRepository.save(author);
   }
 
@@ -29,7 +31,7 @@ export class AuthorService extends BaseService<Author> {
     return author;
   }
 
-  async update(id: number, updateAuthorDto: Partial<Author>): Promise<Author> {
+  async update(id: number, updateAuthorDto: UpdateAuthorDto): Promise<Author> {
     await this.authorRepository.update(id, updateAuthorDto);
     const updatedAuthor = await this.findOneOrFail({
       where: { id },

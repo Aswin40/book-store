@@ -8,14 +8,15 @@ import {
   Delete,
 } from '@nestjs/common';
 import { AuthorService } from './author.service';
-import Author from './author.entity';
+import UpdateAuthorDto from './updateAuthor.dto';
+import CreateAuthorDto from './createAuthor.dto';
 
 @Controller('author')
 export class AuthorController {
   constructor(private readonly authorService: AuthorService) {}
 
   @Post()
-  async create(@Body() createAuthorDto: Partial<Author>) {
+  async create(@Body() createAuthorDto: CreateAuthorDto) {
     return await this.authorService.create(createAuthorDto);
   }
 
@@ -32,7 +33,7 @@ export class AuthorController {
   @Put(':id')
   async update(
     @Param('id') id: string,
-    @Body() updateAuthorDto: Partial<Author>,
+    @Body() updateAuthorDto: UpdateAuthorDto,
   ) {
     return await this.authorService.update(+id, updateAuthorDto);
   }
