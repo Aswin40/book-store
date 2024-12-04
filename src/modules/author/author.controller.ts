@@ -26,7 +26,7 @@ export class AuthorController {
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return await this.authorService.findOne(+id);
+    return await this.authorService.getById(+id);
   }
 
   @Put(':id')

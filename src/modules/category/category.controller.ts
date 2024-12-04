@@ -16,19 +16,19 @@ export default class CategoryController {
 
   @Get()
   public async getCategories(): Promise<Category[]> {
-    return this.categoryService.getCategories();
+    return this.categoryService.getAll();
   }
 
   @Post()
   public async createCategory(@Body('name') name: string): Promise<Category> {
-    return this.categoryService.createCategory(name);
+    return this.categoryService.create(name);
   }
 
   @Delete(':id')
   public async deleteCategory(
     @Param('id') id: string,
   ): Promise<{ message: string }> {
-    return this.categoryService.deleteCategory(+id);
+    return this.categoryService.remove(+id);
   }
 
   @Put(':id')
@@ -36,6 +36,6 @@ export default class CategoryController {
     @Param('id') id: string,
     @Body('name') name: string,
   ) {
-    return this.categoryService.updateCategory(+id, name);
+    return this.categoryService.update(+id, name);
   }
 }

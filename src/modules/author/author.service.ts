@@ -21,7 +21,7 @@ export class AuthorService extends BaseService<Author> {
     return this.authorRepository.find();
   }
 
-  async findOne(id: number): Promise<Author> {
+  async getById(id: number): Promise<Author> {
     const author = await this.findOneOrFail({ where: { id } });
     if (!author) {
       throw new NotFoundException(`Author with ID ${id} not found`);
