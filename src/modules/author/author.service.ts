@@ -2,13 +2,16 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import Author from './author.entity';
+import { BaseService } from 'src/util/base.service';
 
 @Injectable()
-export class AuthorService {
+export class AuthorService extends BaseService<Author> {
   constructor(
     @InjectRepository(Author)
     private authorRepository: Repository<Author>,
-  ) {}
+  ) {
+    super(authorRepository);
+  }
 
   async create(author: Partial<Author>): Promise<Author> {
     return this.authorRepository.save(author);
@@ -19,7 +22,7 @@ export class AuthorService {
   }
 
   async findOne(id: number): Promise<Author> {
-    const author = await this.authorRepository.findOne({ where: { id } });
+    const author = await this.findOneOrFail({ where: { id } });
     if (!author) {
       throw new NotFoundException(`Author with ID ${id} not found`);
     }
@@ -28,7 +31,7 @@ export class AuthorService {
 
   async update(id: number, updateAuthorDto: Partial<Author>): Promise<Author> {
     await this.authorRepository.update(id, updateAuthorDto);
-    const updatedAuthor = await this.authorRepository.findOne({
+    const updatedAuthor = await this.findOneOrFail({
       where: { id },
     });
     if (!updatedAuthor) {
