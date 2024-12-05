@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import CategoryService from './category.service';
 import { Category } from './category.entity';
+import { CategoryDto } from './category.dto';
 
 @Controller('/category')
 export default class CategoryController {
@@ -20,8 +21,10 @@ export default class CategoryController {
   }
 
   @Post()
-  public async createCategory(@Body('name') name: string): Promise<Category> {
-    return this.categoryService.create(name);
+  public async createCategory(
+    @Body() category: CategoryDto,
+  ): Promise<Category> {
+    return this.categoryService.create(category);
   }
 
   @Delete(':id')
@@ -34,8 +37,8 @@ export default class CategoryController {
   @Put(':id')
   public async updateCategory(
     @Param('id') id: string,
-    @Body('name') name: string,
+    @Body() category: CategoryDto,
   ) {
-    return this.categoryService.update(+id, name);
+    return this.categoryService.update(+id, category);
   }
 }
