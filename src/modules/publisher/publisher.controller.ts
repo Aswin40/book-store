@@ -8,14 +8,15 @@ import {
   Delete,
 } from '@nestjs/common';
 import PublisherService from './publisher.service';
-import Publisher from './publisher.entity';
+import CreatePublisherDto from './createPublisher.dto';
+import UpdatePublisherDto from './updatePublisher.dto';
 
 @Controller('publisher')
 export class PublisherController {
   constructor(private readonly publisherService: PublisherService) {}
 
   @Post()
-  create(@Body() createPublisherDto: Partial<Publisher>) {
+  create(@Body() createPublisherDto: CreatePublisherDto) {
     return this.publisherService.create(createPublisherDto);
   }
 
@@ -27,7 +28,7 @@ export class PublisherController {
   @Put(':id')
   update(
     @Param('id') id: string,
-    @Body() updatePublisherDto: Partial<Publisher>,
+    @Body() updatePublisherDto: UpdatePublisherDto,
   ) {
     return this.publisherService.update(+id, updatePublisherDto);
   }
